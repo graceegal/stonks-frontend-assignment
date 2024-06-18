@@ -1,5 +1,5 @@
 // import { URL, URLSearchParams } from "url";
-import { RequestParams } from "@/types/mockapi";
+import { RequestParams, User } from "@/types/mockapi";
 
 /** A class for the mockApi */
 
@@ -41,25 +41,48 @@ class MockApi {
   static async getUsers(
     username?: string,
     page: number = 1,
-    limit: number = 10
+    limit?: number
   ) {
-    const userData: { [key: string]: string } = {
+    const data: { [key: string]: string } = {
       page: String(page),
-      limit: String(limit),
     };
 
     if (username) {
-      userData.username = username;
+      data.username = username;
+    }
+
+    if (limit) {
+      data.limit = String(limit);
     }
 
     const res = await this.request({
       endpoint: "users",
-      data: userData,
+      data: data,
     });
 
     console.log(res);
     return res;
   }
+
+  /** create new user
+   *
+   * user param format: {
+   * "createdAt": string (date),
+		"username": string,
+		"avatar": string (url),
+		"active": boolean,
+		"fullName": string
+   * }
+   */
+  static async createUser(user: User) {
+    const res = await this.request({
+      endpoint: "users",
+      data: user,
+      method: "POST",
+    });
+  }
+
+  // add deleteUser & updateUser functions here for deleting and patch CRUD operations
 }
 
 export default MockApi;
