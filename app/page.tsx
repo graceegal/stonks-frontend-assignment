@@ -2,20 +2,26 @@ import MockApi from "@/lib/mockapi";
 import { User, columns } from "@/components/UserTable/columns";
 import { DataTable } from "@/components/UserTable/data-table";
 import Head from "next/head";
+import Chat from "@/components/Chat/chat";
+import { useState } from "react";
 
 export default async function Home() {
   const users: User[] = await MockApi.getUsers();
+
+  // const [users, setUsers] = useState(users);
 
   return (
     <div>
       <Head>
         <title>Chat with your friends!</title>
       </Head>
-      <main className="min-h-screen grid grid-cols-3 gap-8 items-center justify-between mx-auto">
-        <div className="data-table h-screen container col-span-2">
+      <main className="min-h-screen grid grid-cols-3 gap-8 mx-auto">
+        <div className="data-table h-screen overflow-y-auto container col-span-2">
           <DataTable columns={columns} data={users} />
         </div>
-        <div className="chat col-span-1"></div>
+        <div className="chat col-span-1 container h-screen flex flex-col">
+          <Chat />
+        </div>
       </main>
     </div>
   );
