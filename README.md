@@ -42,4 +42,4 @@ Data Table
 
 Chat
 - Tag a User
-- Commands
+- Emoji tooltip

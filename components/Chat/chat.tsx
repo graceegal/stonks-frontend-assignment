@@ -5,6 +5,8 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Textarea } from "@/components/ui/textarea";
 import { chatMessages } from "@/lib/chat-message-data";
 
+const commands = [];
+
 export default function Chat() {
   const [title, setTitle] = useState("Stonks Chat 2.0");
   const [description, setDescription] = useState(
@@ -12,26 +14,92 @@ export default function Chat() {
   );
   const [messages, setMessages] = useState(chatMessages);
   const [input, setInput] = useState("");
+  const [showCommands, setShowCommands] = useState(false);
 
   const currentUser = "User1"; // fake dummy user
+  const validCommands = ["/mute", "/ban", "/title", "/description"];
 
   // Handle message input
-  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setInput(e.target.value);
-  };
+  function handleChange(evt: React.ChangeEvent<HTMLTextAreaElement>) {
+    const value = evt.target.value;
+    setInput(value);
+
+    if (value.startsWith("/")) {
+      setShowCommands(true);
+    }
+  }
+
+  // Handle commands
+  function handleCommand(command: string) {
+    const cmd = command.split(" ")[0];
+    console.log("cmd", cmd);
+    const arg = command.split(" ").slice(1).join(" ");
+    console.log("arg", arg);
+
+    // fail fast if not valid command or no argument given for command
+    if (!validCommands.includes(cmd)) {
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        {
+          user: "Chat Bot",
+          message: `${command} is not a valid command.`,
+        },
+      ]);
+      return;
+    } else if (!arg) {
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        {
+          user: "Chat Bot",
+          message: `Please provide more context in order to perform that command.`,
+        },
+      ]);
+      return;
+    }
+
+    if (cmd === "/mute") {
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { user: "Chat Bot", message: `User @${arg} muted` },
+      ]);
+    } else if (cmd === "/ban") {
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { user: "Chat Bot", message: `User @${arg} banned` },
+      ]);
+    } else if (cmd === "/title") {
+      setTitle(arg);
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { user: "Chat Bot", message: `Title set to "${arg}"` },
+      ]);
+    } else if (cmd === "/description") {
+      setDescription(arg);
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { user: "Chat Bot", message: `Description set to "${arg}"` },
+      ]);
+    }
+  }
 
   // Handle message send
-  const handleSend = (e: FormEvent) => {
-    e.preventDefault();
+  function handleSend(evt: FormEvent) {
+    evt.preventDefault();
     if (!input.trim()) return;
 
-    // Add the new message to the chat
-    setMessages((prevMessages) => [
-      ...prevMessages,
-      { user: currentUser, message: input },
-    ]);
+    // Add the new message to the chat or send command message
+    if (input.startsWith("/")) {
+      handleCommand(input);
+    } else {
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { user: currentUser, message: input },
+      ]);
+    }
+
     setInput("");
-  };
+    setShowCommands(false);
+  }
 
   return (
     <div className="p-4 bg-white border rounded shadow-md">
