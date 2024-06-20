@@ -3,12 +3,11 @@ import { User, columns } from "@/components/UserTable/columns";
 import { DataTable } from "@/components/UserTable/data-table";
 import Head from "next/head";
 import Chat from "@/components/Chat/chat";
-import { useState } from "react";
+
+// Note: would use UseRouter here to implement saving state of user filters in query params
 
 export default async function Home() {
   const users: User[] = await MockApi.getUsers();
-
-  // const [users, setUsers] = useState(users);
 
   return (
     <div>

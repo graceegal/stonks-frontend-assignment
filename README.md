@@ -29,3 +29,5 @@ Chat
 - Tag a User
 - Emoji tooltip
 - Commands suggestions pop up (I built out the command functionality but not the action pop up that shows the valid commands when a user types "/")
+
+Testing - use jest to run unit and integration tests to ensure reliability of code

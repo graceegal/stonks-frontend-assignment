@@ -38,11 +38,7 @@ class MockApi {
    *  - page (number)
    *  - limit (number)
    */
-  static async getUsers(
-    username?: string,
-    page: number = 1,
-    limit?: number
-  ) {
+  static async getUsers(username?: string, page: number = 1, limit?: number) {
     const data: { [key: string]: string } = {
       page: String(page),
     };

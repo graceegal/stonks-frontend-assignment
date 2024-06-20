@@ -30,9 +30,7 @@ export default function Chat() {
   // Handle commands
   function handleCommand(command: string) {
     const cmd = command.split(" ")[0];
-    console.log("cmd", cmd);
     const arg = command.split(" ").slice(1).join(" ");
-    console.log("arg", arg);
 
     // fail fast if not valid command or no argument given for command
     if (!validCommands.includes(cmd)) {
