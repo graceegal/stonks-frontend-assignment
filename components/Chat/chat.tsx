@@ -5,8 +5,6 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Textarea } from "@/components/ui/textarea";
 import { chatMessages } from "@/lib/chat-message-data";
 
-const commands = [];
-
 export default function Chat() {
   const [title, setTitle] = useState("Stonks Chat 2.0");
   const [description, setDescription] = useState(
@@ -140,6 +138,7 @@ export default function Chat() {
             Send
           </button>
         </form>
+        {/* Insert command component here if showCommands is set to true, if not hide */}
       </div>
     </div>
   );
